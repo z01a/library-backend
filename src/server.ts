@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
 import UserRouter from "./routers/user.router";
+import AuthRouter from "./routers/auth.router";
 
 const app = express();
 
@@ -24,6 +25,7 @@ router.route("/").get((request, response) => {
     response.send("Hello Wordl!");
 });
 
+router.use("/auth", AuthRouter)
 router.use("/users", UserRouter)
 
 app.use("/", router);
