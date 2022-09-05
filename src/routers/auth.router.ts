@@ -8,4 +8,8 @@ AuthRouter.route("/").post(
     (request, response) => new AuthController().authenticate(request, response)
 );
 
+AuthRouter.route("/validate").post(
+    (request, response) => new AuthController().validate(request, response)
+);
+
 export default AuthRouter;
