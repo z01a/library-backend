@@ -25,7 +25,7 @@ router.route("/").get((request, response) => {
     response.send("Hello Wordl!");
 });
 
-router.use("/auth", AuthRouter)
+router.use("/authenticate", AuthRouter)
 router.use("/users", UsersRouter)
 
 app.use("/", router);
