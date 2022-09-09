@@ -10,7 +10,8 @@ let User = new Schema({
         type: String
     },
     username: {
-        type: String
+        type: String,
+        unique: true
     },
     password:{
         type: String
@@ -19,6 +20,10 @@ let User = new Schema({
         type: String
     },
     email:{
+        type: String,
+        unique: true
+    },
+    phone:{
         type: String
     },
     picture:{

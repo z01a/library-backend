@@ -1,10 +1,10 @@
-import express, { response } from "express";
+import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
-import UserRouter from "./routers/user.router";
 import AuthRouter from "./routers/auth.router";
+import UsersRouter from "./routers/users.router";
 
 const app = express();
 
@@ -26,7 +26,7 @@ router.route("/").get((request, response) => {
 });
 
 router.use("/auth", AuthRouter)
-router.use("/users", UserRouter)
+router.use("/users", UsersRouter)
 
 app.use("/", router);
 
