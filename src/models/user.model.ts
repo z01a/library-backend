@@ -16,6 +16,9 @@ let User = new Schema({
     password:{
         type: String
     },
+    moderator:{
+        type: Boolean
+    },
     address:{
         type: String
     },

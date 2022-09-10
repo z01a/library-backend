@@ -3,6 +3,8 @@ import * as jwt from "jsonwebtoken"
 
 import UserModel from "../models/user.model"
 import AdminModel from "../models/admin.model"
+import { Role } from "../enums/role"
+import { Admin } from "mongodb"
 
 export class AuthController {
 
@@ -13,7 +15,6 @@ export class AuthController {
         let elevated = request.body.elevated;
 
         if(elevated) {
-            console.log("Elevated authentication!")
             const admin  = AdminModel.findOne({username: username, password: password}, (error: any, admin: any ) => {
                 if(error) {
                     response.status(401).json({"error": "Failed to authenticate!"});
@@ -27,7 +28,6 @@ export class AuthController {
                 }
             });
         } else {
-            console.log("Non Elevated authentication!")
             const user  = UserModel.findOne({username: username, password: password}, (error: any, user: any ) => {
                 if(error) {
                     response.status(401).json({"error": "Failed to authenticate!"});
@@ -43,19 +43,36 @@ export class AuthController {
         }
     }
 
-    validate = (request: express.Request, response: express.Response) => {
+    validate = async (request: express.Request, response: express.Response) => {
+        // TODO: What token should I validate?
         let headerToken = request.headers.authorization;
+        
         let token = request.body.token;
 
         if(token) {
             try {
-                var decoded = jwt.verify(token, "leetspeak");
-                response.status(200).json({ "success": "JWT is valid!" });
+                var decoded: any = jwt.verify(token, "leetspeak");
             } catch(error) {
-                response.status(401).json({ "error": "JWT is not valid!" });
+                response.status(401).json({ "error": "JWT is not valid!" , role: Role.Guest });
+            }
+
+            const username = decoded.username;
+
+            let administrator = await AdminModel.findOne({ username: username });
+            if(administrator) {
+                response.status(200).json({ "success": "JWT is valid!", role: Role.Administrator });
+            } else {
+                let user = await UserModel.findOne({ username: username });
+                if(user) {
+                    if(user.moderator) {
+                        response.status(200).json({ "success": "JWT is valid!", role: Role.Moderator });
+                    } else {
+                        response.status(200).json({ "success": "JWT is valid!", role: Role.User });
+                    }
+                }
             }
         } else {
-            response.status(401).json({ "error": "JWT is not valid!" });
+            response.status(200).json({ "success": "There is not JWT!", role: Role.Guest });
         }
     }
 
