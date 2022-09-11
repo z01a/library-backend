@@ -12,6 +12,16 @@ export class UsersController {
         });
     }
 
+    fetchUser = (request: express.Request, response: express.Response) => {
+        UserModel.findOne({ username: request.params.id }, (error: any, user: any) => {
+            if(error) {
+                response.status(400).json({ "error": "Failed to fetch user" })
+            } else {
+                response.status(200).json(user);
+            }
+        });
+    }
+
     requests = (request: express.Request, response: express.Response) => {
         UserModel.find({ active: false }, (error: any, users: any) => {
             if(error) {
