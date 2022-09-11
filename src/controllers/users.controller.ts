@@ -2,8 +2,18 @@ import * as express from "express"
 import UserModel from "../models/user.model"
 
 export class UsersController {
-    fetchAllUsers = (request: express.Request, response: express.Response) => {
+    fetch = (request: express.Request, response: express.Response) => {
         UserModel.find({}, (error: any, users: any) => {
+            if(error) {
+                response.status(400).json({ "error": "Failed to fetch all users" })
+            } else {
+                response.status(200).json(users);
+            }
+        });
+    }
+
+    requests = (request: express.Request, response: express.Response) => {
+        UserModel.find({ active: false }, (error: any, users: any) => {
             if(error) {
                 response.status(400).json({ "error": "Failed to fetch all users" })
             } else {
@@ -33,6 +43,27 @@ export class UsersController {
             response.status(200).json({ "message": "User added" })
         }).catch(error => {
             response.status(400).json({ "error": "Failed to register user" })
+        });
+    }
+
+    approve = (request: express.Request, response: express.Response) => {
+        const username = request.body.username;
+        console.log(username)
+
+        UserModel.collection.updateOne({ username: username }, { $set: { "active": true } }).then((result) => {
+            response.status(200).json({ "success": "Request approved!" });
+        }).catch((error) => {
+            response.status(400).json({ "error": "Request failed to be approved!" });
+        });
+    }
+
+    decline = (request: express.Request, response: express.Response) => {
+        const username = request.body.username;
+
+        UserModel.collection.deleteOne({ username: username }).then((user) => {
+            response.status(200).json({ "success": "Request declined!" });
+        }).catch((error) => {
+            response.status(400).json({ "error": "Request failed to be declined!" });
         });
     }
 }
