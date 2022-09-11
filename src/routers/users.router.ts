@@ -15,8 +15,8 @@ UsersRouter.route("/requests/approve").post(
     (request, response) => new UsersController().approve(request, response)
 );
 
-UsersRouter.route("/requests/decline").post(
-    (request, response) => new UsersController().decline(request, response)
+UsersRouter.route("/requests/delete").post(
+    (request, response) => new UsersController().delete(request, response)
 );
 
 UsersRouter.route("/register").post(

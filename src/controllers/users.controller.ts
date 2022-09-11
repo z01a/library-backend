@@ -57,7 +57,7 @@ export class UsersController {
         });
     }
 
-    decline = (request: express.Request, response: express.Response) => {
+    delete = (request: express.Request, response: express.Response) => {
         const username = request.body.username;
 
         UserModel.collection.deleteOne({ username: username }).then((user) => {
