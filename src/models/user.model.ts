@@ -6,31 +6,34 @@ let User = new Schema({
     firstname: {
         type: String
     },
-    lastname:{
+    lastname: {
         type: String
     },
     username: {
         type: String,
         unique: true
     },
-    password:{
+    password: {
         type: String
     },
-    moderator:{
+    moderator: {
         type: Boolean
     },
-    address:{
+    address: {
         type: String
     },
-    email:{
+    email: {
         type: String,
         unique: true
     },
-    phone:{
+    phone: {
         type: String
     },
-    picture:{
+    picture: {
         type: String
+    },
+    active: {
+        type: Boolean
     }
 });
 

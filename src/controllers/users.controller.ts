@@ -22,7 +22,9 @@ export class UsersController {
                 address: request.body.address,
                 email: request.body.email,
                 phone: request.body.phone,
-                picture: request.body.picture
+                picture: request.body.picture,
+                moderator: false,
+                active: false
             })
 
         // TODO: Check if user already exist or maybe we can do in database model?

@@ -31,7 +31,7 @@ export class AuthController {
             const user  = UserModel.findOne({username: username, password: password}, (error: any, user: any ) => {
                 if(error) {
                     response.status(401).json({"error": "Failed to authenticate!"});
-                } else if(user) {
+                } else if(user && user.active) {
                     const myUser = user as typeof UserModel;
                     var token = jwt.sign( { username: username }, "leetspeak", { expiresIn: "2h" });
                     response.status(200).json({ "success": "Authentication is successfull!", "token": token });
