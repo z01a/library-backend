@@ -7,12 +7,12 @@ UsersRouter.route("/").get(
     (request, response) => new UsersController().fetch(request, response)
 );
 
-UsersRouter.route("/:id").get(
-    (request, response) => new UsersController().fetchUser(request, response)
-);
-
 UsersRouter.route("/requests").get(
     (request, response) => new UsersController().requests(request, response)
+);
+
+UsersRouter.route("/:id").get(
+    (request, response) => new UsersController().fetchUser(request, response)
 );
 
 UsersRouter.route("/requests/approve").post(
