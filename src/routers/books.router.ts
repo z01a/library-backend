@@ -12,6 +12,10 @@ BooksRouter.route("/modify").post(
     (request, response) => new BooksController().modify(request, response)
 );
 
+BooksRouter.route("/register").post(
+    (request, response) => new BooksController().register(request, response)
+);
+
 BooksRouter.route("/requests").get(
     (request, response) => new BooksController().requests(request, response)
 );
