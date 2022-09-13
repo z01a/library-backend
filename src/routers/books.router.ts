@@ -8,6 +8,10 @@ BooksRouter.route("/").get(
     (request, response) => new BooksController().fetch(request, response)
 );
 
+BooksRouter.route("/modify").post(
+    (request, response) => new BooksController().modify(request, response)
+);
+
 BooksRouter.route("/:id").get(
     (request, response) => new BooksController().fetchBook(request, response)
 );

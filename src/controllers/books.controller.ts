@@ -24,4 +24,24 @@ export class BooksController {
         });
     }
 
+    modify = (request: express.Request, response: express.Response) => {
+        const isbn = request.body.isbn;
+        const title = request.body.title;
+        const publisher = request.body.publisher;
+        const published = request.body.published;
+        const language = request.body.language;
+        const genres = request.body.genres;
+
+        BookModel.collection.updateOne({ isbn: isbn}, {$set: {
+            "title": title,
+            "publisher": publisher,
+            "published": published,
+            "language": language
+        }}).then(result => {
+            response.status(200).json({ "message": "Book modified!" })
+        }).catch(error => {
+            response.status(400).json({ "error": "Failed to modify book" })
+        });
+    }
+
 }
