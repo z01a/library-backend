@@ -11,6 +11,10 @@ UsersRouter.route("/requests").get(
     (request, response) => new UsersController().requests(request, response)
 );
 
+UsersRouter.route("/me").get(
+    (request, response) => new UsersController().currentUser(request, response)
+);
+
 UsersRouter.route("/:id").get(
     (request, response) => new UsersController().fetchUser(request, response)
 );

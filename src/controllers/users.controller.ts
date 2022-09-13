@@ -1,5 +1,6 @@
 import * as express from "express"
 import UserModel from "../models/user.model"
+import * as jwt from "jsonwebtoken"
 
 export class UsersController {
     fetch = (request: express.Request, response: express.Response) => {
@@ -10,6 +11,29 @@ export class UsersController {
                 response.status(200).json(users);
             }
         });
+    }
+
+    currentUser = async (request: express.Request, response: express.Response) => {
+        let token = request.headers.authorization;
+
+        if(token) {
+            try {
+                var decoded: any = jwt.verify(token, "leetspeak");
+            } catch(error) {
+                response.status(401).json({ "error": "JWT is not valid!" });
+            }
+
+            const username = decoded.username;
+
+            let user = await UserModel.findOne({ username: username });
+            if(user) {
+                response.status(200).json(user);
+            } else {
+                response.status(401).json({ "error": "JWT is not valid!" });
+            }
+        } else {
+            response.status(200).json({ "success": "There is not JWT!" });
+        }
     }
 
     fetchUser = (request: express.Request, response: express.Response) => {
