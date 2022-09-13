@@ -27,6 +27,9 @@ let Book = new Schema({
     },
     cover:{
         type: String
+    },
+    active: {
+        type: Boolean
     }
 });
 

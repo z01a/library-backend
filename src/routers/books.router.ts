@@ -12,6 +12,18 @@ BooksRouter.route("/modify").post(
     (request, response) => new BooksController().modify(request, response)
 );
 
+BooksRouter.route("/requests").get(
+    (request, response) => new BooksController().requests(request, response)
+);
+
+BooksRouter.route("/requests/approve").post(
+    (request, response) => new BooksController().approve(request, response)
+);
+
+BooksRouter.route("/requests/delete").post(
+    (request, response) => new BooksController().delete(request, response)
+);
+
 BooksRouter.route("/:id").get(
     (request, response) => new BooksController().fetchBook(request, response)
 );
