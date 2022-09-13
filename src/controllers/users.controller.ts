@@ -56,6 +56,39 @@ export class UsersController {
         });
     }
 
+    modify = (request: express.Request, response: express.Response) => {
+        const username = request.body.username;
+        const firstname = request.body.firstname;
+        const lastname = request.body.lastname;
+        const address = request.body.address;
+        const email = request.body.email;
+        const phone = request.body.phone;
+        const moderator = request.body.moderator;
+        const active = request.body.active;
+
+
+        UserModel.collection.updateOne({ username: username}, {$set: {
+            "firstname": firstname,
+            "lastname": lastname,
+            "address": address,
+            "email": email,
+            "phone": phone,
+            "moderator": moderator,
+            "active": active
+        }}).then(result => {
+            response.status(200).json({ "message": "User modified!" })
+        }).catch(error => {
+            response.status(400).json({ "error": "Failed to modify user" })
+        });
+        // TODO: Check if user already exist or maybe we can do in database model?
+
+        // user.save().then(user => {
+        //     response.status(200).json({ "message": "User added" })
+        // }).catch(error => {
+        //     response.status(400).json({ "error": "Failed to register user" })
+        // });
+    }
+
     approve = (request: express.Request, response: express.Response) => {
         const username = request.body.username;
         console.log(username)

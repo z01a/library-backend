@@ -27,4 +27,8 @@ UsersRouter.route("/register").post(
     (request, response) => new UsersController().register(request, response)
 );
 
+UsersRouter.route("/modify").post(
+    (request, response) => new UsersController().modify(request, response)
+);
+
 export default UsersRouter;
