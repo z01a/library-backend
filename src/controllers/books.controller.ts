@@ -15,7 +15,7 @@ export class BooksController {
     }
 
     fetchBook = (request: express.Request, response: express.Response) => {
-        BookModel.findOne({ isbn: request.params.isbn }, (error: any, book: any) => {
+        BookModel.findOne({ isbn: request.params.id }, (error: any, book: any) => {
             if(error) {
                 response.status(400).json({ "error": "Failed to fetch book" })
             } else {
