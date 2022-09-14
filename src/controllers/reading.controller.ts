@@ -1,28 +1,44 @@
 import * as express from "express"
 import * as jwt from "jsonwebtoken"
 
-import UserModel from "../models/user.model"
-import AdminModel from "../models/admin.model"
-import { Role } from "../enums/role"
-import { Admin } from "mongodb"
 import ReadingModel from "../models/reading.model"
 
 export class ReadingController {
 
-    fetch = (request: express.Request, response: express.Response) => {
-        let username = request.body.username;
+    private static getUsernameFromToken = (token: string | undefined) => {
+        if(token) {
+            try {
+                var decoded: any = jwt.verify(token, "leetspeak");
 
-        ReadingModel.aggregate([{
-            $lookup: {
-                from: 'books',
-                localField: "isbn",
-                foreignField: "isbn",
-                as: "reading"
+                return decoded.username;
+            } catch(error) {
+                return undefined
             }
-        }]).then(result => {
-            response.status(200).json(result);
-        }).catch(error => {
-            response.status(401).send();
-        });
+        }
     }
+
+    fetch = (request: express.Request, response: express.Response) => {
+        console.log(request.headers.authorization)
+        let username = ReadingController.getUsernameFromToken(request.headers.authorization);
+
+        console.log(username)
+
+        ReadingModel.aggregate([
+            {
+                $match: { username: "vladimir" }
+            },
+            {
+                $lookup: {
+                    from: 'books',
+                    localField: "isbn",
+                    foreignField: "isbn",
+                    as: "reading"
+                }
+            }]).then(result => {
+                response.status(200).json(result);
+            }).catch(error => {
+                response.status(401).send();
+            });
+    }
+
 }
