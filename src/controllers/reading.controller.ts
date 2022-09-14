@@ -18,14 +18,11 @@ export class ReadingController {
     }
 
     fetch = (request: express.Request, response: express.Response) => {
-        console.log(request.headers.authorization)
         let username = ReadingController.getUsernameFromToken(request.headers.authorization);
-
-        console.log(username)
 
         ReadingModel.aggregate([
             {
-                $match: { username: "vladimir" }
+                $match: { username: username }
             },
             {
                 $lookup: {
