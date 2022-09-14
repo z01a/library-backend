@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import AuthRouter from "./routers/auth.router";
 import UsersRouter from "./routers/users.router";
 import BooksRouter from "./routers/books.router";
+import ReadingRouter from "./routers/reading.router";
 
 const app = express();
 
@@ -29,6 +30,7 @@ router.route("/").get((request, response) => {
 router.use("/authenticate", AuthRouter)
 router.use("/users", UsersRouter)
 router.use("/books", BooksRouter)
+router.use("/reading", ReadingRouter)
 
 app.use("/", router);
 

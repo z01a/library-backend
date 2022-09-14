@@ -13,6 +13,18 @@ export class UsersController {
         });
     }
 
+    private getUsernameFromToken = (token: string | undefined) => {
+        if(token) {
+            try {
+                var decoded: any = jwt.verify(token, "leetspeak");
+
+                return decoded.username;
+            } catch(error) {
+                return undefined
+            }
+        }
+    }
+
     currentUser = async (request: express.Request, response: express.Response) => {
         let token = request.headers.authorization;
 
@@ -44,6 +56,32 @@ export class UsersController {
                 response.status(200).json(user);
             }
         });
+    }
+
+    myBooks = (request: express.Request, response: express.Response) => {
+        const username = this.getUsernameFromToken(request.headers.authorization);
+        if(username) {
+            UserModel.findOne({ username: username}, { books: 1 }, (error: any, books: any) => {
+                if(error) {
+                    response.status(400).send();
+                } else {
+                    response.status(200).json(books);
+                }
+            });
+        }
+    }
+
+    myHistory = (request: express.Request, response: express.Response) => {
+        const username = this.getUsernameFromToken(request.headers.authorization);
+        if(username) {
+            UserModel.findOne({ username: username}, { history: 1 }, (error: any, history: any) => {
+                if(error) {
+                    response.status(400).send();
+                } else {
+                    response.status(200).json(history);
+                }
+            });
+        }
     }
 
     requests = (request: express.Request, response: express.Response) => {

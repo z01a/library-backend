@@ -8,6 +8,14 @@ BooksRouter.route("/").get(
     (request, response) => new BooksController().fetch(request, response)
 );
 
+BooksRouter.route("/my").post(
+    (request, response) => new BooksController().modify(request, response)
+);
+
+BooksRouter.route("/my/history").post(
+    (request, response) => new BooksController().modify(request, response)
+);
+
 BooksRouter.route("/modify").post(
     (request, response) => new BooksController().modify(request, response)
 );

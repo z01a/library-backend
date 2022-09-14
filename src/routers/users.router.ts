@@ -11,6 +11,14 @@ UsersRouter.route("/requests").get(
     (request, response) => new UsersController().requests(request, response)
 );
 
+UsersRouter.route("/my/books").get(
+    (request, response) => new UsersController().myBooks(request, response)
+);
+
+UsersRouter.route("/my/history").get(
+    (request, response) => new UsersController().myHistory(request, response)
+);
+
 UsersRouter.route("/me").get(
     (request, response) => new UsersController().currentUser(request, response)
 );

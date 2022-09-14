@@ -34,6 +34,12 @@ let User = new Schema({
     },
     active: {
         type: Boolean
+    },
+    books: {
+        type: Array<String>
+    },
+    history: {
+        type: Array<String>
     }
 });
 
