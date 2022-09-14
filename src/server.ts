@@ -7,6 +7,7 @@ import AuthRouter from "./routers/auth.router";
 import UsersRouter from "./routers/users.router";
 import BooksRouter from "./routers/books.router";
 import ReadingRouter from "./routers/reading.router";
+import HistoryRouter from "./routers/history.router";
 
 const app = express();
 
@@ -31,6 +32,7 @@ router.use("/authenticate", AuthRouter)
 router.use("/users", UsersRouter)
 router.use("/books", BooksRouter)
 router.use("/reading", ReadingRouter)
+router.use("/history", HistoryRouter)
 
 app.use("/", router);
 
