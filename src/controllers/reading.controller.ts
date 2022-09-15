@@ -1,5 +1,6 @@
 import * as express from "express"
 import * as jwt from "jsonwebtoken"
+import BookModel from "../models/book.model";
 
 import ReadingModel from "../models/reading.model"
 
@@ -15,6 +16,33 @@ export class ReadingController {
                 return undefined
             }
         }
+    }
+
+    take = async (request: express.Request, response: express.Response) => {
+        let username = ReadingController.getUsernameFromToken(request.headers.authorization);
+        let isbn = request.params.id;
+
+        let reading = new ReadingModel({
+            username: username,
+            isbn: isbn
+        });
+
+        await reading.save();
+
+        await BookModel.updateOne({ isbn: isbn }, { $inc: { 'count': -1 }});
+
+        response.status(200).send();
+    }
+
+    return = async (request: express.Request, response: express.Response) => {
+        let username = ReadingController.getUsernameFromToken(request.headers.authorization);
+        let isbn = request.params.id;
+
+        await ReadingModel.deleteOne({ username: username, isbn: isbn});
+
+        await BookModel.updateOne({ isbn: isbn }, { $inc: { 'count': 1 }});
+
+        response.status(200).send();
     }
 
     fetch = (request: express.Request, response: express.Response) => {

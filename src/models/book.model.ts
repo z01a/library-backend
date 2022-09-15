@@ -30,6 +30,9 @@ let Book = new Schema({
     },
     active: {
         type: Boolean
+    },
+    count: {
+        type: Number
     }
 });
 
