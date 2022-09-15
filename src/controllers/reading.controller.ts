@@ -1,5 +1,6 @@
 import * as express from "express"
 import * as jwt from "jsonwebtoken"
+import HistoryModel from "../models/history.model";
 import BookModel from "../models/book.model";
 
 import ReadingModel from "../models/reading.model"
@@ -39,7 +40,10 @@ export class ReadingController {
         let username = ReadingController.getUsernameFromToken(request.headers.authorization);
         let isbn = request.params.id;
 
-        await ReadingModel.deleteOne({ username: username, isbn: isbn});
+        let reading = await ReadingModel.findOneAndDelete({ username: username, isbn: isbn});
+        if(reading) {
+            await HistoryModel.insertMany({username: username, isbn: isbn, taken: reading.taken, returned: Date() });
+        }
 
         await BookModel.updateOne({ isbn: isbn }, { $inc: { 'count': 1 }});
 
