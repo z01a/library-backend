@@ -24,7 +24,8 @@ export class ReadingController {
 
         let reading = new ReadingModel({
             username: username,
-            isbn: isbn
+            isbn: isbn,
+            taken: Date()
         });
 
         await reading.save();
