@@ -17,6 +17,14 @@ export class ConfigController {
         }
     }
 
+    fetch = (request: express.Request, response: express.Response) => {
+        ConfigModel.findOne({ envoirment: "live" }).then((result: any) => {
+            response.status(200).json(result.config)
+        }).catch(() => {
+            response.status(401).send()
+        });
+    }
+
     setLoan = (request: express.Request, response: express.Response) => {
         ConfigModel.updateOne({ envoirment: "live" }, { $set: { "config.maxLoanDays": request.params.id }}).then(() => {
             response.status(200).send()
