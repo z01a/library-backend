@@ -5,7 +5,7 @@ import BookModel from "../models/book.model"
 export class BooksController {
 
     fetch = (request: express.Request, response: express.Response) => {
-        BookModel.find({}, (error: any, books: any) => {
+        BookModel.find({ active: true }, (error: any, books: any) => {
             if(error) {
                 response.status(400).json({ "error": "Failed to fetch all books" })
             } else {
