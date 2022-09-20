@@ -98,4 +98,20 @@ export class BooksController {
         });
     }
 
+    recommended = async (request: express.Request, response: express.Response) => {
+        const date: Date = new Date()
+        date.setHours(0, 0, 0, 0)
+
+        let recommended: any[] | null = await BookModel.findOne({ recommended: date});
+        if(recommended) {
+            response.status(200).json(recommended);
+        } else {
+            let recommended: any[] = await BookModel.aggregate([{ $sample: { size: 1 } }]);
+            if(recommended) {
+                await BookModel.updateOne({ isbn: recommended[0].isbn}, {$set: { 'recommended': date }})
+                response.status(200).json(recommended);
+            }
+        }
+    }
+
 }

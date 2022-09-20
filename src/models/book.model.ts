@@ -33,6 +33,9 @@ let Book = new Schema({
     },
     count: {
         type: Number
+    },
+    recommended: {
+        type: Date
     }
 });
 
