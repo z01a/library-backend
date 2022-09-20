@@ -34,7 +34,7 @@ export class ConfigController {
     }
 
     getLoan = async (request: express.Request, response: express.Response) => {
-        ConfigModel.find({ envoirment: "live" }).then((result: any) => {
+        ConfigModel.findOne({ envoirment: "live" }).then((result: any) => {
             response.status(200).json({ "maxLoanDays": result.config.maxLoanDays })
         }).catch((error) => {
             response.status(200).json({ "maxLoanDays": 14 })
