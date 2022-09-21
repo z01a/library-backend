@@ -16,6 +16,10 @@ BooksRouter.route("/recommended").get(
     (request, response) => new BooksController().recommended(request, response)
 );
 
+BooksRouter.route("/comment/:id").post(
+    (request, response) => new BooksController().comment(request, response)
+);
+
 BooksRouter.route("/register").post(
     (request, response) => new BooksController().register(request, response)
 );

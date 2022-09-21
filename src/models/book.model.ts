@@ -36,7 +36,10 @@ let Book = new Schema({
     },
     recommended: {
         type: Date
-    }
+    },
+    comments:{
+        type: Array<Object>
+    },
 });
 
 export default mongoose.model('Book', Book, 'books');

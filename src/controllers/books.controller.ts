@@ -1,9 +1,22 @@
 import * as express from "express"
 import HistoryModel from "../models/history.model";
+import * as jwt from "jsonwebtoken"
 
 import BookModel from "../models/book.model"
 
 export class BooksController {
+
+    private static getUsernameFromToken = (token: string | undefined) => {
+        if(token) {
+            try {
+                var decoded: any = jwt.verify(token, "leetspeak");
+
+                return decoded.username;
+            } catch(error) {
+                return undefined
+            }
+        }
+    }
 
     fetch = (request: express.Request, response: express.Response) => {
         BookModel.find({ active: true }, (error: any, books: any) => {
@@ -113,6 +126,22 @@ export class BooksController {
                 response.status(200).json(recommended);
             }
         }
+    }
+
+    comment = (request: express.Request, response: express.Response) => {
+        const isbn = request.params.id;
+        const comment = request.body.comment;
+
+        let username = BooksController.getUsernameFromToken(request.headers.authorization);
+
+        BookModel.updateOne({ isbn: isbn}, { $push: { comments: {
+            username: username,
+            comment: comment
+        }} }).then((user) => {
+            response.status(200).json({ "success": "Comment added!" });
+        }).catch((error) => {
+            response.status(400).json({ "error": "Failed to add comment!" });
+        });
     }
 
     popular = (request: express.Request, response: express.Response) => {
