@@ -1,4 +1,5 @@
 import * as express from "express"
+import HistoryModel from "../models/history.model";
 
 import BookModel from "../models/book.model"
 
@@ -112,6 +113,35 @@ export class BooksController {
                 response.status(200).json(recommended);
             }
         }
+    }
+
+    popular = (request: express.Request, response: express.Response) => {
+        HistoryModel.aggregate([
+            {
+                $group: {
+                    _id: '$isbn',
+                    count: {
+                      $sum: 1
+                    }
+                  }
+            },
+            {
+                $lookup: {
+                    from: 'books',
+                    localField: "_id",
+                    foreignField: "isbn",
+                    as: "book"
+                }
+            },
+            {
+            $sort: {
+                count: -1
+            }
+        }]).limit(3).then(result => {
+                response.status(200).json(result);
+            }).catch(error => {
+                response.status(401).send();
+            });
     }
 
 }
