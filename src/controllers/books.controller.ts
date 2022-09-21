@@ -37,7 +37,7 @@ export class BooksController {
                 published: request.body.published,
                 language: request.body.language,
                 // TODO: Fix this cover image so we can upload our own cover image
-                cover: "https://images.isbndb.com/covers/65/07/9788650526507.jpg",
+                cover: request.body.cover,
                 authors: request.body.authors,
                 genres: request.body.genres,
                 active: false
