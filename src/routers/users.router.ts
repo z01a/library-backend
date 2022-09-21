@@ -11,6 +11,10 @@ UsersRouter.route("/requests").get(
     (request, response) => new UsersController().requests(request, response)
 );
 
+UsersRouter.route("/change/password").post(
+    (request, response) => new UsersController().changePassword(request, response)
+);
+
 UsersRouter.route("/my/books").get(
     (request, response) => new UsersController().myBooks(request, response)
 );

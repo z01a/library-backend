@@ -84,6 +84,28 @@ export class UsersController {
         }
     }
 
+    changePassword = async (request: express.Request, response: express.Response) => {
+        const username = this.getUsernameFromToken(request.headers.authorization);
+        const new_password = request.body.new_password;
+        const old_password = request.body.old_password;
+        const old_repeated = request.body.old_repeated;
+
+        const user: any = await UserModel.findOne({username: username});
+        if(user) {
+            if(old_password == user.password) {
+                UserModel.updateOne({ username: username}, { $set: { "password": new_password}}, (error: any, result: any) => {
+                    if(error) {
+                        response.status(400).send();
+                    } else {
+                        response.status(200).send();
+                    }
+                });
+            } else {
+                response.status(400).send();
+            }
+        }
+    }
+
     requests = (request: express.Request, response: express.Response) => {
         UserModel.find({ active: false }, (error: any, users: any) => {
             if(error) {
